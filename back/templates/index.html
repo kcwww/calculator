@@ -48,18 +48,23 @@
                     {{ pro.name }} {{ pro.major }} {{ pro.ad_year }}
                     {% endfor %}
                     <br><hr> 
-                    {% for comment in user.comment_set.all %} <!--수강한 과목들 유저객체에서 가져옴-->
+                    {% if user.lesson_set.all %}
+                    {% for class in user.lesson_set.all %} <!--수강한 과목들 유저객체에서 가져옴-->
                     <span class="badge rounded-pill bg-light"
-                      >{{ comment.classkind }} {{ comment.classname }} {{ comment.classcredits }}</span
-                    ><span><a href="{% url 'delete' comment.id %}">삭제하기</a></span>
+                      >{{ class.classkind }} {{ class.classname }} {{ class.classcredits }}</span
+                    ><span><a href="{% url 'delete' class.id %}">삭제하기</a></span>
 
                     <hr />
                     {% endfor %}
-
+                    {% endif %}
                     <div class="text-center">
                       {% if user.is_authenticated %}
-
-                      <a class="small" href="{% url 'logout' %}">log out!</a>
+                        
+                      <a class="small" href="{% url 'logout' %}">log out!</a><br>
+                      {% for pro in user.profile_set.all %} <!--유저 객체에서 profile 가져옴-->
+                      <a class="small" href="{% url 'modify' pro.id %}">회원 정보 수정</a>
+                      {% endfor %}
+                      
 
                       {% else %}
                       <a class="small" href="{% url 'login' %}">log in!</a>

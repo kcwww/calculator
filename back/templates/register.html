@@ -42,7 +42,7 @@
                   <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                 </div>
                 <form class="user" method="POST">
-                    {% csrf_token %}
+                  {% csrf_token %}
                   <div class="form-group">
                     <input
                       type="text"
@@ -75,17 +75,20 @@
 
                   <br />
                   <br />
+      
                   <input type="submit" class="btn btn-success btn-user btn-block" value="다음 단계로">
-                
+                  
                 </form>
 
                 <hr />
-                {% if flag %}
-                <p>이미 있는 ID 입니다.</p>
+                
+                {% if messages %}
+                {% for message in messages %}
+                {{ message.tags }}
+                {{ message.message }}
+                {% endfor %}
                 {% endif %}
-                {% if other_flag %}
-                <p>비밀번호가 서로 다릅니다.</p>
-                {% endif %}
+                
                 <div class="text-center">
                   <a class="small" href="{% url 'login' %}"
                     >Already have an account? Login!</a

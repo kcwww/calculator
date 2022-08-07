@@ -1,13 +1,13 @@
 from django import forms
-from .models import Comment, Profile
+from .models import Lesson, Profile
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['name','major','ad_year']
 
-class CommentForm(forms.ModelForm):
+class LessonForm(forms.ModelForm):
     class Meta:
-        model = Comment
+        model = Lesson
         fields = ['classname','classkind','classcredits']
 
