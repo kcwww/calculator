@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from accounts import views
+from calapp import views as cal_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,6 @@ urlpatterns = [
     #path('guest_home/<int:guest_id>', views.guest_home, name = 'guest_home'),
     #
 
+    path('calculator',cal_views.calculator, name='calculator'),
+    path('class_delete<int:class_id>',cal_views.class_delete,name='class_delete'),
 ]

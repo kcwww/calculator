@@ -15,3 +15,11 @@ settings.py ->	from django.contrib.messages import constants as messages_constan
 settings.py -> MESSAGE_TAGS = {
     messages_constants.INFO: '',
 } // 김찬우
+
+2022.08.12
+학점 계산기 구현 특화교양 유무, 초과교양학점 10학점까지, 초과전공학점 자선으로 이동, 졸업 가능유무 출력
+총 필요한 앱 2개 비회원 로그인은 아직 구현하지 못함
+settings.py -> INSTALLED_APPS = [
+    'calculator앱',
+    'accounts앱',
+]  추가

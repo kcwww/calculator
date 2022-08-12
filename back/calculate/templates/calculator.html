@@ -42,7 +42,7 @@
                 <div class="col-lg-6">
                   <div class="p-5">
                     <div class="text-center">
-                      <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                      <h1 class="h4 text-gray-900 mb-4">계산</h1>
                     </div>
                     {% for pro in user.profile_set.all %} <!--유저 객체에서 profile 가져옴-->
                     {{ pro.name }} {{ pro.major }} {{ pro.ad_year }}
@@ -52,36 +52,47 @@
                     {% for class in user.lesson_set.all %} <!--수강한 과목들 유저객체에서 가져옴-->
                     <span class="badge rounded-pill bg-light"
                       >{{ class.classkind }} {{ class.classname }} {{ class.classcredits }}</span
-                    ><span><a href="{% url 'delete' class.id %}">삭제하기</a></span>
+                    ><span><a href="{% url 'class_delete' class.id %}">삭제하기</a></span>
 
                     <hr />
                     {% endfor %}
                     {% endif %}
                     <div class="text-center">
-                      {% if user.is_authenticated %}
+                      <p>
+                        {% for pro in user.profile_set.all %} <!--유저 객체에서 profile 가져옴-->
+                        {{ pro.ad_year }}년 입학 {{ pro.major }} 졸업 학점
+                        {% endfor %}
+                      </p>
+                      <br><br>
+                      <p>
+                        총 학점 : {{ graduate.sum }} <br>
+                        {% for key, value in gradu_class.items %}
+                        {{ key }} : {{ value }} &nbsp;<br>
+                        {% endfor %}
+                      </p>
+                      <br><br>
+                      
+                      <p>총 학점 : {{ all }} </p>
+                      <p>
+                        {% for key, value in class.items %}
+                        {{ key }} : {{ value }} &nbsp;<br>
+                        {% endfor %}
+                      </p>
+                      <br><br>
+                      {% if messages %} 
+                      {% for message in messages %} 
+                      {{ message.tags }} {{ message.message }} <br>
+                      {% endfor %} 
+                      {% endif %}
+                      <br><br>
+
                         
-                      <a class="small" href="{% url 'logout' %}">log out!</a><br>
-                      {% for pro in user.profile_set.all %} <!--유저 객체에서 profile 가져옴-->
-                      <a class="small" href="{% url 'modify' pro.id %}">회원 정보 수정</a>
-                      {% endfor %}
+                      <a class="small" href="{% url 'home' %}">이전으로 돌아가기</a><br>
                       
 
-                      {% else %}
-                      <a class="small" href="{% url 'login' %}">log in!</a>
-                      <br />
-                      <a class="small" href="{% url 'signup' %}"
-                        >Create an Account!</a
-                      >
-                      {% endif %}
                       <br />
                     </div>
-                    {% if user.is_authenticated %}
-                    <form action="" method="POST">
-                      {% csrf_token %} {{ form }}
-
-                      <input type="submit" value="추가하기" />
-                    </form>
-                    {% endif %}
+                    
                   </div>
                 </div>
               </div>
