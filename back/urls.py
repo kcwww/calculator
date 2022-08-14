@@ -15,6 +15,7 @@ urlpatterns = [
     path('logout',views.logout,name='logout'),
 
     path('delete<int:class_id>',views.delete,name='delete'),
+    path('delete_all',views.delete_all,name='delete_all'),
 
     #정보 수정 관련 URL
     path('modify/<int:pro_id>', views.modify, name='modify'),

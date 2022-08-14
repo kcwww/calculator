@@ -24,12 +24,13 @@ def signup(request):
 
 def signup_detail(request): #회원정보 기입
     if request.method == "POST":
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            unfinished = form.save(commit=False)
-            unfinished.user = request.user
-            unfinished.save()
-            return redirect('home')
+        new_user = Profile()
+        new_user.name = request.POST["name"]
+        new_user.major = request.POST["major"]
+        new_user.ad_year = request.POST["ad_year"]
+        new_user.user = request.user
+        new_user.save()
+        return redirect('home')
     form = ProfileForm()
     return render(request, 'register_detail.html',{'form':form})
 
@@ -74,6 +75,10 @@ def delete(request,class_id):
     delete_lesson.delete()
     return redirect('home')
 
+def delete_all(request):
+    delete_all_lesson = Lesson.objects.filter(link=request.user)
+    delete_all_lesson.delete()
+    return redirect('home')
 
 ################################################
 #회원정보/비밀번호 수정 html
