@@ -22,10 +22,7 @@ urlpatterns = [
     path('modify/userinfo/<int:pro_id>', views.modify_userinfo, name='modify_userinfo'),
     path('modify/password/<int:pro_id>', views.modify_password, name='modify_password'),
 
-    #비회원 로그인 URL
-    #path('guest_login/', views.guest_login, name = 'guest_login'),
-    #path('guest_home/<int:guest_id>', views.guest_home, name = 'guest_home'),
-    #
+    
 
     path('calculator',cal_views.calculator, name='calculator'),
     path('class_delete<int:class_id>',cal_views.class_delete,name='class_delete'),

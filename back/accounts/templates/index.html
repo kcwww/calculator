@@ -57,6 +57,19 @@
                     <hr />
                     {% endfor %}
                     {% endif %}
+
+
+
+                    {% for key,value in credits.items %}
+                    {{ key }} : {{ value.0 }}/{{ value.1 }}<br>
+                    {% endfor %}
+
+
+                    <br><br>
+                    <a href="{% url 'delete_all' %}">초기화</a>
+                    <br><br>
+                    
+
                     <div class="text-center">
                       {% if user.is_authenticated %}
                         
@@ -78,7 +91,31 @@
                     <p>타과 전공수업은 자유선택으로 선택해주시길 바랍니다.</p>
                     {% if user.is_authenticated %}
                     <form action="" method="POST">
-                      {% csrf_token %} {{ form }}
+                      {% csrf_token %}
+
+                      <input
+                        type="text"
+                        name="classname"
+                        class="form-control form-control-user"
+                        placeholder="수강 과목을 입력해주세요"
+                      />
+                      <input
+                        type="number"
+                        name="classcredits"
+                        class="form-control form-control-user"
+                        placeholder="학점"
+                      />
+                      <select name="classkind">
+                        <option value="" selected disabled>수업분류</option>
+                        <option value="전공필수">전공필수</option>
+                        <option value="전공선택">전공선택</option>
+                        <option value="균형교양">균형교양</option>
+                        <option value="기초교양">기초교양</option>
+                        <option value="대학별교양">대학별교양</option>
+                        <option value="특화교양">특화교양</option>
+                        <option value="자유선택">자유선택</option>
+
+                      </select>
 
                       <input type="submit" value="추가하기" />
                     </form>

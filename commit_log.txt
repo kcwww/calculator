@@ -26,3 +26,14 @@ settings.py -> INSTALLED_APPS = [
 
 2022.08.14
 초기화 기능 구현, register_detail.html forms 대신 일반 input 태그로 변경
+
+2022.08.16
+메시지 기능 분류 후에 class로 메시지 분류 수업추가 input태그로 바꾸었음
+현재 학점 실시간으로 출력
+
+settings.py -> MESSAGE_TAGS = {
+    messages_constants.DEBUG: 'debug',
+    messages_constants.ERROR: 'error',
+    messages_constants.INFO: 'info',
+}
+후에 html에서 <div class=example{{message.tag}}> 로 분류

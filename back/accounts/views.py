@@ -4,11 +4,13 @@ from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from .forms import LessonForm, ProfileForm
 from django.contrib.auth.hashers import check_password
+from calapp.models import Graduate
+from calapp.views import add_credit
 
 def signup(request):
     if request.method == "POST":  
         if User.objects.filter(username=request.POST['username']).exists():
-            messages.info(request, "이미 존재하는 아이디 입니다.")
+            messages.error(request, "이미 존재하는 아이디 입니다.")
             return render(request, 'register.html')   
         if request.POST["password1"] == request.POST["password2"]:
             user = User.objects.create_user(
@@ -17,7 +19,7 @@ def signup(request):
             auth.login(request,user)
             return redirect('signup_detail')
         else:
-            messages.info(request, "비밀번호가 일치하지 않습니다.")
+            messages.error(request, "비밀번호가 일치하지 않습니다.")
             return render(request, 'register.html')
     else:
         return render(request, 'register.html')
@@ -31,8 +33,7 @@ def signup_detail(request): #회원정보 기입
         new_user.user = request.user
         new_user.save()
         return redirect('home')
-    form = ProfileForm()
-    return render(request, 'register_detail.html',{'form':form})
+    return render(request, 'register_detail.html')
 
 def login(request):
     # request == POST 라면 로그인 GET 이라면 login html 띄우기
@@ -47,7 +48,7 @@ def login(request):
             
             return redirect('home')
         else: #로그인 에러시
-            messages.info(request, "아이디 또는 비밀번호가 틀렸습니다.")
+            messages.error(request, "아이디 또는 비밀번호가 틀렸습니다.")
             return render(request, 'login.html')
 
     else:
@@ -59,16 +60,50 @@ def logout(request):
     return redirect('login')
 
 def home(request): #메인 화면
-    form = LessonForm()
     current_user = request.user
-    if (request.method == "POST"):   
-        filled_form = LessonForm(request.POST)
-        if (filled_form.is_valid()):
-            finished_form = filled_form.save(commit=False)
-            finished_form.link = request.user #수강한 과목 객체와 유저객체와 연결
-            finished_form.save()
-            return redirect('home')
-    return render(request,'index.html',{'form':form,'user':current_user})
+    user_profile = Profile.objects.get(user = current_user)
+    gradu_major = user_profile.major
+    gradu_ad_year = user_profile.ad_year
+    gradu = Graduate.objects.get(major=gradu_major, ad_year=gradu_ad_year)
+
+    choicemajor = Lesson.objects.filter(link = current_user, classkind='전공선택')
+    needmajor   = Lesson.objects.filter(link = current_user, classkind='전공필수')
+    special     = Lesson.objects.filter(link = current_user, classkind='특화교양')
+    college     = Lesson.objects.filter(link = current_user, classkind='대학별교양')
+    balance     = Lesson.objects.filter(link = current_user, classkind='균형교양')
+    basic       = Lesson.objects.filter(link = current_user, classkind='기초교양')
+    free        = Lesson.objects.filter(link = current_user, classkind='자유선택')
+    
+
+    choicemajor = add_credit(choicemajor)
+    needmajor = add_credit(needmajor)
+    special = add_credit(special)
+    college = add_credit(college)
+    balance = add_credit(balance)
+    basic = add_credit(basic)
+    free = add_credit(free)
+
+    now_credits = {
+        '전공선택':[choicemajor,gradu.choicemajor],
+        '전공필수':[needmajor,gradu.needmajor],
+        '특화교양':[special,gradu.special],
+        '대학별교양':[college,gradu.college],
+        '균형교양':[balance,gradu.balance],
+        '기초교양':[basic,gradu.basic],
+        '자유선택':[free,gradu.free]
+        }
+
+
+    if (request.method == "POST"):
+        new_class = Lesson()
+        new_class.classname = request.POST["classname"]
+        new_class.classkind = request.POST["classkind"]
+        new_class.classcredits = request.POST["classcredits"]
+        new_class.link = request.user
+        new_class.save()   
+        return redirect('home')
+    return render(request,'index.html',{'user':current_user,'credits':now_credits})
+
 
 def delete(request,class_id):
     delete_lesson = get_object_or_404(Lesson, pk=class_id) #수강한 과목 지우기
@@ -100,11 +135,11 @@ def modify_password(request,pro_id):
                 auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('home')
             else:
-                messages.info(request, "새로운 비밀번호를 다시 확인해주세요.")
+                messages.error(request, "새로운 비밀번호를 다시 확인해주세요.")
                 profile = get_object_or_404(Profile,pk=pro_id)
                 return render(request, 'modify.html',{'profile':profile,'profile_id':pro_id})
         else:
-            messages.info(request, "비밀번호가 일치하지 않습니다.")
+            messages.error(request, "비밀번호가 일치하지 않습니다.")
             profile = get_object_or_404(Profile,pk=pro_id)
             return render(request, 'modify.html',{'profile':profile,'profile_id':pro_id})
     else:
@@ -128,35 +163,3 @@ def modify_userinfo(request,pro_id):
     profile = get_object_or_404(Profile,pk=pro_id)
     return render(request, 'modify.html',{'profile':profile,'profile_id':pro_id})
 
-
-################################################################
-#
-#
-###비회원 로그인
-#def guest_login(request):
-#    if request.method == "POST":
-#        guest = Guest()
-#        guest.major = request.POST['major']
-#        guest.ad_year = request.POST['ad_year']
-#        guest.save()
-#        form = LessonForm()
-#        return render(request,'guest_index.html',{'guest':guest,'form':form})
-#
-#    return render(request, 'guest_login.html')
-#
-#def guest_home(request,guest_id):
-#    if (request.method == "POST"):
-#        guest = get_object_or_404(Guest,pk=guest_id)
-#        form = LessonForm()   
-#        filled_form = LessonForm(request.POST)
-#        if (filled_form.is_valid()):
-#            finished_form = filled_form.save(commit=False)
-#            finished_form.guest_link = get_object_or_404(Guest,pk=guest_id)
-#            finished_form.save()
-#            return render(request,'guest_index.html',{'guest':guest,'form':form})
-#
-#def guest_delete(request,class_id):
-#    delete_post = get_object_or_404(Lesson, pk=class_id) #수강한 과목 지우기
-#    delete_post.delete()
-#    return redirect('geust_home',)
-#
