@@ -1,0 +1,48 @@
+/**전체 설정**/
+@import "reset.css";
+/**전체 설정 완료**/
+
+/**전체설정**/
+.footer {
+    width : 100%;
+    padding : 30px 50px;
+}
+
+/**밑줄**/
+hr {
+    width: 100%;
+    background-color: #A8aabc;
+    height: 0.1em;
+    border: 0;
+}
+
+/**글 전체 속성 정리**/
+.footer_text {
+    height: 70px;
+    font-family: 'GmarketSansMedium';
+    padding-top: 1em;
+}
+
+/**선택지**/
+.footer li {
+    color : #A8aabc;
+    text-align: left;
+    display: inline;
+    padding: 0 3px 0 3px;
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+
+  .footer a:hover { 
+    text-decoration: underline;
+    text-underline-position:under;
+  }
+
+/**저작권**/
+.copy {
+    text-align: right;
+    padding-top: 3em;
+    font-size: 0.9rem;
+    margin-right: 1em;
+}
+

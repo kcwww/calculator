@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head>
+    <title>정보수정</title>
+    <link rel="stylesheet" href="{% static 'css/design.css' %}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="content" style="margin-top : 100px">
+        <h3>
+            <label>정보수정</label>
+        </h3>
+
+        <form id="f_input" action="{% url 'modify_userinfo' %}" method="POST">
+            {% csrf_token %}
+            {% for pro in user.profile_set.all %}
+            <input type="text" name="name" placeholder="{{ pro.name }}" /><br>
+            <input type="text" name="major" placeholder="{{ pro.major }}" /><br>
+            <input type="text" name="admisson_year" placeholder="{{ pro.ad_year }}" />
+            {% endfor %}
+            <div class="btn_area">
+                <button type="submit">
+                    <span>변경</span>
+                </button>
+            </div>
+        </form>
+
+
+        <form id="f_input" action="{% url 'modify_password' %}" method="POST">
+            {% csrf_token %}
+            <input type="password" name="curr_password" placeholder="현재 비밀번호" /><br>
+            <input type="password" name="new_password" placeholder="새 비밀번호(문자, 숫자 포함 8~20자)" /><br>
+            <input type="password" name="repeat_password" placeholder="비밀번호 재입력" /><br>
+
+            {% if messages %}
+            {% for message in messages %}
+            {{ message.tags }}
+            {{ message.message }}
+            {% endfor %}
+            {% endif %}
+
+            <div class="btn_area">
+                <button type="submit">
+                    <span>변경</span>
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+
+{% endblock %}
