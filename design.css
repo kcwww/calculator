@@ -5,7 +5,7 @@
     font-style: normal;
 }
 
-html{
+body{
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -27,7 +27,6 @@ h3::after {
     text-align: center;
 }
 
-
 button{
     color: white;
     background-color: #1E51A2;
@@ -45,6 +44,8 @@ input{
     margin: 5px;
 }
 
+
+/**sign_up**/
 .id{
     width: 154px;
 }
@@ -54,23 +55,28 @@ input{
     margin-bottom: 0px;
 }
 
+.small_info{
+    font-size: 10px;
+}
+
+/**non_member**/
 .info {
     font-size: 13px;
 }
 
-.small_info{
-    font-size: 10px;
 
-}
-
-
+/**result**/
 .result{
     border: #a8aabc solid ;
-    margin: 5px;
+    margin: 20px;
+    padding: 20px;
+    font-weight: 700;
 }
 
 .detail{
     border: #a8aabc solid;
+    margin: 20px;
+    padding: 10px;
 }
 
 
