@@ -67,17 +67,29 @@ input{
 
 /**result**/
 .result{
-    border: #a8aabc solid ;
-    margin: 20px;
+    border: solid #a8aabc;
+    margin: 3%;
     padding: 20px;
     font-weight: 700;
 }
 
 .detail{
-    border: #a8aabc solid;
-    margin: 20px;
-    padding: 10px;
+    width: 95%;
+    border: solid #a8aabc;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+
 }
+
+th, td {
+    border: 1px solid #a8aabc;
+}
+
+.remain{
+    color: #D65E6F;
+}
+
 
 
 
