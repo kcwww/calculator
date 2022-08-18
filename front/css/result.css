@@ -2,7 +2,7 @@
 @import "reset.css";
 /**완료 _ 전체 설정**/
 
-.content{
+#content{
     font-family: 'GmarketSansMedium';
     text-align: center;
     width: 50%;
@@ -84,7 +84,7 @@ tr:first-child td {
 
 
 @media screen and (max-width : 1023px) {
-    .content {
+    #content {
         width: 85%;
     }
 }

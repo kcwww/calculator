@@ -314,3 +314,15 @@ border-top: 1.2px solid rgba(0, 0, 0, 0.1);
         margin: 0.4em 0;
     }
 }
+
+
+
+
+
+
+
+td {
+    border: 0.1em solid #A8AABc;
+    height: 40px;
+    padding-top: 13px;
+}
