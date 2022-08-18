@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>회원가입</title>
+        <link rel="stylesheet" href="css/sign_up.css" type="text/css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+            @import url("css/footer.css");
+        </style>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <div id="content">
+                <div class ="signup_size">
+                    <label id ="signup_tit">회원가입</label>
+                </div>
+                <form class="signup_form">
+                    <div class="box_id">
+                        <input class="id" type="text" name="id" placeholder="아이디 (6~20자)" size=1px/ id ="signup_id">
+                        <button id="button_cheack">중복 확인</button>
+                    </div>
+                    <div id="signup_alr_id">사용 가능한 아이디 입니다/사용할 수 없는 아이디입니다</div>
+                    <div class = "signup_passs">
+                        <input type="password" name="pw" placeholder="비밀번호 (문자,숫자로 8~20자)" class = "signup_pass"/> <br>
+                        <input type="password" name="repw" placeholder="비밀번호 재확인"  class = "signup_pass" />
+                        <div id="signup_alr_pss">비밀번호가 일치합니다/비밀번호가 일치하지 않습니다.</div>
+                    </div>
+                    <button type="button" onclick="location.href='info_enter.html'" id ="button_next">다음 단계로</button>
+                </form>
+            </div>
+        </div>
+
+        <footer class ="footer">
+                <hr id = "footer_hr">
+                <div class = "footer_text">
+                   <ul class="footer_list">
+                        <li><a href="#">문의</a></li>
+                        <li>|</li>
+                        <li><a href="#">사이트 도움말</a></li>
+                        <li>|</li>
+                        <li><a href="#">건의</a></li>
+                   </ul>
+                    <p class = "copy">© 2022 멋사강원대</p>
+                </div>
+            </footer>
+        
+    </body>
+
+</html>

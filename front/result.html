@@ -1,0 +1,95 @@
+<!--header랑 겹치는 코드 또 있음 수정해야함-->
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>결과</title>
+        <link rel="stylesheet" href="css/result.css" type="text/css">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <style type="text/css">
+            @import url("css/footer.css");
+        </style>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <div id="content">
+                <div class="result">
+                    <p>졸업이 <span style="color: #D65E6F;">불가능</span>합니다</p>
+                </div>
+
+                <table class="detail">
+                    <thead>
+                        <tr>
+                            <th></th><th></th><th>졸업학점</th><th>이수학점</th><th class="remain">잔여학점</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="5">교양</td>
+                        </tr>
+                        <tr>
+                            <td>기초</td><td>10</td><td>10</td><td class="remain">0</td>
+                        </tr>
+                        <tr>
+                            <td>대교</td><td>18</td><td>18</td><td class="remain">0</td>
+                        </tr>
+                        <tr>
+                            <td>균형</td><td>12</td><td>12</td><td class="remain">0</td>
+                        </tr>
+                        <tr>
+                            <td>특화</td><td>1</td><td>1</td><td class="remain">0</td>
+                        </tr>
+                    
+                        <tr>
+                            <td rowspan="4">전공</td>
+                        </tr>
+                        <tr>
+                            <td>전필</td><td>12</td><td>9</td><td class="remain">3</td>
+                        </tr>
+                        <tr>
+                            <td>전선</td><td>30</td><td>27</td><td class="remain">3</td>
+                        </tr>
+                        <tr>
+                            <td>심화</td><td>27</td><td>0</td><td class="remain">27</td>
+                        </tr>
+
+                        <tr>
+                            <td rowspan="3">자선</td>
+                        </tr>
+                        <tr>
+                            <td>자선</td><td>20</td><td>6</td><td class="remain">14</td>
+                        </tr>
+                        <tr>
+                            <td>교직</td><td>0</td><td>0</td><td class="remain">0</td>
+                        </tr>
+
+                        <tr>
+                            <td>총 학점</td><td></td></td><td>130</td><td>83</td><td class="remain">47</td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer class ="footer">
+            <hr id = "footer_hr">
+            <div class = "footer_text">
+               <ul class="footer_list">
+                    <li><a href="#">문의</a></li>
+                    <li>|</li>
+                    <li><a href="#">사이트 도움말</a></li>
+                    <li>|</li>
+                    <li><a href="#">건의</a></li>
+               </ul>
+                <p class = "copy">© 2022 멋사강원대</p>
+            </div>
+        </footer>
+ 
+    </body>
+</html>
