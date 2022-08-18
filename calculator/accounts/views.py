@@ -4,6 +4,8 @@ from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from .forms import LessonForm, ProfileForm
 from django.contrib.auth.hashers import check_password
+from calapp.models import Graduate
+from calapp.views import add_credit
 
 
 def signup(request):
@@ -60,38 +62,79 @@ def logout(request):
     return redirect('login')
 
 def home(request): #메인 화면
-    form = LessonForm()
+    #student = request.user
+    #current_user = Profile.objects.get(user = student)
+    #current_user =  get_object_or_404(Profile, user=request.user)
     current_user = request.user
-    if (request.method == "POST"):   
-        filled_form = LessonForm(request.POST)
-        if (filled_form.is_valid()):
-            finished_form = filled_form.save(commit=False)
-            finished_form.link = request.user #수강한 과목 객체와 유저객체와 연결
-            finished_form.save()
-            return redirect('home')
-    return render(request,'index.html',{'form':form,'user':current_user})
+    user_profile = Profile.objects.get(user = current_user)
+    gradu_major = user_profile.major
+    gradu_ad_year = user_profile.ad_year
+    gradu = Graduate.objects.get(major=gradu_major, ad_year=gradu_ad_year)
 
-def delete(request,class_id):
+    choicemajor = Lesson.objects.filter(link = current_user, classkind='전공선택')
+    needmajor   = Lesson.objects.filter(link = current_user, classkind='전공필수')
+    special     = Lesson.objects.filter(link = current_user, classkind='특화교양')
+    college     = Lesson.objects.filter(link = current_user, classkind='대학별교양')
+    balance     = Lesson.objects.filter(link = current_user, classkind='균형교양')
+    basic       = Lesson.objects.filter(link = current_user, classkind='기초교양')
+    free        = Lesson.objects.filter(link = current_user, classkind='자유선택')
+    
+
+    choicemajor = add_credit(choicemajor)
+    needmajor = add_credit(needmajor)
+    special = add_credit(special)
+    college = add_credit(college)
+    balance = add_credit(balance)
+    basic = add_credit(basic)
+    free = add_credit(free)
+
+    now_credits = {
+        '전공선택':[choicemajor,gradu.choicemajor],
+        '전공필수':[needmajor,gradu.needmajor],
+        '특화교양':[special,gradu.special],
+        '대학별교양':[college,gradu.college],
+        '균형교양':[balance,gradu.balance],
+        '기초교양':[basic,gradu.basic],
+        '자유선택':[free,gradu.free]
+        }
+
+
+    if (request.method == "POST"):
+        new_class = Lesson()
+        new_class.classname = request.POST["classname"]
+        new_class.classkind = request.POST["classkind"]
+        new_class.classcredits = request.POST["classcredits"]
+        new_class.link = request.user
+        new_class.save()   
+        return redirect('home')
+    return render(request,'index.html',{'user':current_user,'credits':now_credits})
+
+def delete(request, class_id):
     delete_lesson = get_object_or_404(Lesson, pk=class_id) #수강한 과목 지우기
     print(delete_lesson)
     delete_lesson.delete()
     return redirect('home')
 
-def class_modify(request, class_id):
-    print(class_id)
-    #modify_lesson = get_object_or_404(Lesson, pk=class_id)
-    modify_lesson = Lesson.objects.get(pk=class_id)
-    print(modify_lesson.classname)
-    if request.method == "POST":
-        if(request.POST['classname'] != ''):
-            modify_lesson.classname = request.POST['classname']
-        if(request.POST['classkind'] != ''):
-            modify_lesson.classkind = request.POST['classkind']
-        if(request.POST['classcredits'] != ''):
-            modify_lesson.classcredits = request.POST['classcredits']
-        modify_lesson.save()
-        return redirect('home')
+def delete_all(request):
+    delete_all_lesson = Lesson.objects.filter(link=request.user)
+    delete_all_lesson.delete()
     return redirect('home')
+
+# def class_modify(request, class_id):
+#     print(class_id)
+#     #modify_lesson = get_object_or_404(Lesson, pk=class_id)
+#     modify_lesson = Lesson.objects.get(pk=class_id)
+#     print(modify_lesson.classname)
+#     if request.method == "POST":
+#         if(request.POST['classname'] != ''):
+#             modify_lesson.classname = request.POST['classname']
+#         if(request.POST['classkind'] != ''):
+#             modify_lesson.classkind = request.POST['classkind']
+#         if(request.POST['classcredits'] != ''):
+#             modify_lesson.classcredits = request.POST['classcredits']
+#         modify_lesson.save()
+#         return redirect('home')
+#     return redirect('home')
 
     
 

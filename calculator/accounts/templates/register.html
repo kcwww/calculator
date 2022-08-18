@@ -1,57 +1,63 @@
-{% extends 'footer.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
-
+{% block headcontent %}
 <head>
+    <meta charset="UTF-8">
     <title>회원가입</title>
-    <link rel="stylesheet" href="{% static 'css/design.css' %}" type="text/css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}" type="text/css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        @import url("{% static 'css/footer.css' %}");
+    </style>
 </head>
+{% endblock %}
 
-<body>
-    <div id="content" style="margin-top : 100px">
-        <h3>
-            <label>회원가입</label>
-        </h3>
-
-        <form id="f_input" , method="POST">
+{% block content %}
+<div id="wrapper">
+    <div id="content">
+        <div class ="signup_size">
+            <label id ="signup_tit">회원가입</label>
+        </div>
+        <form class="signup_form" method="POST">
             {% csrf_token %}
-            <div id="box_id">
-                <input class="id" type="text" name="username" placeholder="아이디 입력(6~20자)" size=1px />
-                <!-- <button class="check" type="submit">중복 확인</button><br> -->
+            <div class="box_id">
+                <input class="id" type="text" name="username" placeholder="아이디 (6~20자)" size=1px/ id ="signup_id">
             </div>
 
-            <div class="small_info">
-
+            <div class = "signup_passs">
+                <input type="password" name="password1" placeholder="비밀번호 (문자,숫자로 8~20자)" class = "signup_pass"/> <br>
+                <input type="password" name="password2" placeholder="비밀번호 재확인"  class = "signup_pass" />
+                <div id="signup_alr_pss">
+                    {% if messages %}
+                    {% for message in messages %}
+                    {{ message.tags }}
+                    {{ message.message }}
+                    {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-            <br>
-            <input type="password" name="password1" placeholder="비밀번호 입력(문자, 숫자 포함 8~20자)" /> <br>
-            <input type="password" name="password2" placeholder="비밀번호 재입력" />
-
-            <!-- JOIN BTN-->
-            <div class="btn_area">
-                <button type="submit">다음 단계로</button>
-                <!-- onclick="location.href='info_enter.html'" -->
-            </div>
-
-            <div>
-                {% if messages %}
-                {% for message in messages %}
-                {{ message.tags }}
-                {{ message.message }}
-                {% endfor %}
-                {% endif %}
-            </div>
-
+            <button type="submit" id ="button_next">다음 단계로</button>
         </form>
-
-        <br><br>
         <div class="text-center">
             <a class="small" href="{% url 'login' %}">계정이 있다면? 로그인</a>
         </div>
     </div>
-</body>
+</div>
+
+<footer class ="footer">
+    <hr id = "footer_hr">
+    <div class = "footer_text">
+        <ul class="footer_list">
+            <li><a href="#">문의</a></li>
+            <li>|</li>
+            <li><a href="#">사이트 도움말</a></li>
+            <li>|</li>
+            <li><a href="#">건의</a></li>
+        </ul>
+        <p class = "copy">© 2022 멋사강원대</p>
+    </div>
+</footer>
 {% endblock %}

@@ -1,33 +1,91 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block headcontent %}
+<!--입력창 너무 지저분함 여기 해결방법 찾기-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        @import url("css/header.css");
+        @import url("css/footer.css");
+    </style>
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+</head>
+{% endblock %}
 
 {% block content %}
-<br><br><br><br><br><br><br>
-{% if user.is_authenticated %}
-<form action="{% url 'home' %}" method="POST">
-  {% csrf_token %} {{ form }}
-  <input type="submit" value="추가하기" />
-</form>
-{% endif %}
+<section class="main">
+    <div class="main_wrapper">
+        <!-- 과목입력 form -->
+        {% if user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="add_border">
+                <legend id="add_title">&nbsp;과목 입력&nbsp;</legend>
+                <select id="adds_category" name="classkind">
+                    <option disabled selected>과목 분류</option>
+                    <option value="전공필수">전공필수</option>
+                    <option value="전공선택">전공선택</option>
+                    <option value="균형교양">균형교양</option>
+                    <option value="기초교양">기초교양</option>
+                    <option value="대학별교양">대학별교양</option>
+                    <option value="특화교양">특화교양</option>
+                    <option value="자유선택">자유선택</option>
+                </select>
+                <input type=text id="adds_class" name="classname" placeholder="과목명">
+                <input type=number id="adds_num"name="classcredits" placeholder="학점">
+                <button class="adds_button" type="submit">추가</button>
+            </fieldset>
+        </form>
+        {% endif %}
 
-<hr>
+        <div class="end">
+            <div class="put">
+                <h2 id="put_tit">입력된 과목</h2>
+                <a id="put_reset" href="{% url 'delete_all' %}">&nbsp;✔초기화</a>
+                <hr id="put_hr">
+                <p class="put_plus">-추가버튼을 통해 내용이 입력됩니다</p>
+                <button class="result_button" onclick= "location.href = '{% url 'calculator' %}'">계산하기</button>
 
-{% if user.lesson_set.all %}
-{% for class in user.lesson_set.all %}
-<!--수강한 과목들 유저객체에서 가져옴-->
-<!-- <form action="{% url 'class_modify' class.id %}" method="POST"></form>
-  {% csrf_token %} -->
-  <span>
-    <!-- <input type="text" name="classkind" placeholder="{{ class.classkind }}" />
-    <input type="text" name="classname" placeholder="{{ class.classname }}" />
-    <input type="text" name="classcredits" placeholder="{{ class.classcredits }}" /> -->
-    {{ class.classkind }}{{ class.classname }}{{ class.classcredits }}
-  </span>
-  <span><a href="{% url 'delete' class.id %}">삭제하기</a></span>
-  <!-- <button type="submit">수정하기</button>
-</form> -->
-<hr />
+                <!--출력 될 내용 형식 (시작-->
+                {% if user.lesson_set.all %}
+                {% for class in user.lesson_set.all %}
+                <div class="put_inform">
+                    <!--아래 내용 다 수정 부탁드려요-->
+                    <p class="put_input">{{ class.classkind }}</p>
+                    <p class="put_input">{{ class.classname }}</p>
+                    <p class="put_input">{{ class.classcredits }}</p>
+                    <div class="put_buts">
+    
+                        <button class="put_butdel" onclick= "location.href = '{% url 'delete' class.id %}'">삭제</button>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <br><br><br><br>
+            </div>
 
-{% endfor %}
-{% endif %}
 
+            <div class='result'>
+                <h2 id="result_tit">이수 학점</h2>
+                <hr id="result_hr">
+                {% for key,value in credits.items %}
+                <!--입력되는 이수 학점 수 형식(시작)-->
+                <div class="result_score">
+                    <h3 class="score_tit">{{ key }}</h3>
+                    <!--아래 내용 다 수정 부탁드려요-->
+                    <p class="score_inf"><span id="score_now">{{ value.0 }}&nbsp;</span>/&nbsp;{{ value.1 }}</p>
+                </div>
+                <!--입력되는 이수 학점 수 형식(완료)-->
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+</section>
 {% endblock %}

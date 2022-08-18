@@ -3,12 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<!-- head 태그 이 안에 -->
+{% block headcontent %}
+{% endblock %}
 
 <body>
     <style type="text/css">
@@ -19,7 +16,7 @@
     <header class="header">
         <div class="header_wrapper">
             <div class="header_logo">
-                <a href="#">
+                <a href="{% url 'home' %}">
                     <!--로고 누르면 어디로 가?-->
                     <img src="{% static 'img/cal.png'%}" id="headr_img" />
                     <h1 class="header_title">학점계산기</h1>
@@ -45,29 +42,8 @@
 
 
     <!-- 중간에 들어갈 내용 -->
-    <div>
-        {% block content %}
-        {% endblock %}
-    </div>
-
-    <style type="text/css">
-        @import url("{% static 'css/footer.css' %}");
-    </style>
-
-    <!--footer 하단고정 필요함-->
-    <footer class="footer">
-        <hr>
-        <div class="footer_text">
-            <ul class="footer_list">
-                <li><a href="#">문의</a></li>
-                <li>|</li>
-                <li><a href="#">사이트 도움말</a></li>
-                <li>|</li>
-                <li><a href="#">건의</a></li>
-            </ul>
-            <p class="copy">© 2022 멋사강원대</p>
-        </div>
-    </footer>
+    {% block content %}
+    {% endblock %}
 
 </body>
 

@@ -33,16 +33,17 @@ input[type="text"]::placeholder, input[type="password"]::placeholder {
 }
 
 input[type="text"], input[type="password"] {
-    border-radius : 15px;
+    border-radius : 1em;
     border: 0.1rem solid #A8AABc;
     width: 100%;
     max-width: 17em;
     height: 3.5em;
     margin-top: 0.4em;
+    padding: 1em;
 }
 
 
-button {
+#button_log {
     font-family: 'GmarketSansMedium';
     background-color : #1E51A2;
     color: white;
@@ -53,6 +54,11 @@ button {
     height: 2.5em;
     margin-top: 0.9em;
     font-size: 1.1rem;
+}
+
+#button_log:hover {
+    cursor: pointer;
+    background-color: #113a7d;
 }
 
 
@@ -128,7 +134,11 @@ button {
     margin-left : 0;
 }
 
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1023px) {
+
+    .write_3 { 
+    font-size: 3rem;
+    }
     .int_qus {
         font-size: 1.5em;
         margin-left: 2.8em;

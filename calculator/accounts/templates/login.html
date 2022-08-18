@@ -16,7 +16,7 @@
                 <h1 class = "write_1"> 똑똑한 졸업 도우미,<br>당신의 졸업을 응원합니다</h1>
                 <h3 class = write_3>졸업요건<br>계산기</h3>
 
-                <form class = "log" method="POST" action="">
+                <form class = "log" method="POST">
                     {% csrf_token %}
                     <input type='text' placeholder="ID" name="username"/><br>
                     <input  type='password' placeholder="Password" name="password"/><br>
@@ -27,8 +27,6 @@
                 <nav class = "nomember_input">
                     <ul>
                         <li><a href="{% url 'signup' %}">회원가입</a></li>
-                        <li style="color : #a8aabc">|</li>
-                        <li><a href="#">비회원 이용</a></li>
                     </ul>
                 </nav>
         </div>

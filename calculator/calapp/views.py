@@ -124,30 +124,38 @@ def calculator(request):
         messages.info(request,"자유선택으로 인정되는 초과교양 학점은 10학점까지 인정됩니다. 초과 학점은 제외되었습니다.")
         free = free - (error_sum - 10)
 
-
-    gradu_Lessons = {
-        '전공선택' : gradu.choicemajor,
-        '전공필수' : gradu.needmajor,
-        '특화교양' : gradu.special,
-        '대학별교양' : gradu.college,
-        '균형교양' : gradu.balance,
-        '기초교양' : gradu.basic,
-        '자유선택' : gradu.free
+    ge_Lessons = {
+        '기초교양' : [basic,gradu.basic,gradu.basic-basic],
+        '대학별교양' : [college,gradu.college,gradu.college-college],
+        '균형교양' : [balance,gradu.balance,gradu.balance-balance],
+        '특화교양' : [special,gradu.special,gradu.special-special],
         }
 
-    Lessons = {
-        '전공선택' : choicemajor,
-        '전공필수' : needmajor,
-        '특화교양' : special,
-        '대학별교양' : college,
-        '균형교양' : balance,
-        '기초교양' : basic,
-        '자유선택' : free
+
+    free_Lessons = {
+        '자유선택' : [free,gradu.free,gradu.free-free]
         }
+
+
+    major_Lessons = {
+        '전공선택' : [choicemajor,gradu.choicemajor,gradu.choicemajor-choicemajor],
+        '전공필수' : [needmajor,gradu.needmajor,gradu.needmajor-needmajor],
+        }
+    
+    Lessons = [
+    choicemajor,
+    needmajor,
+    special,
+    college,
+    balance,
+    basic,
+    free,
+    ]
 
     all_credits = 0
-    for key in Lessons:
-        all_credits = all_credits + Lessons[key]
+    for credit in Lessons:
+        all_credits += credit
+        
 
     if(flag):
         messages.info(request,"졸업이 불가능 합니다. 학점이 부족합니다.")
@@ -155,8 +163,12 @@ def calculator(request):
         messages.info(request,"고생하셨습니다. 졸업이 가능합니다.")
     
     
-    return render(request,'calculator.html',{'user':current_user,'class':Lessons,'gradu_class':gradu_Lessons,'all':all_credits,'graduate':gradu})
-
+    return render(request,'result.html',{
+        'user':current_user,'all':all_credits,'graduate':gradu,
+        'ge_class':ge_Lessons,
+        'major_class':major_Lessons,
+        'free_class':free_Lessons,
+        })
 
 
 
