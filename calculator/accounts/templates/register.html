@@ -31,16 +31,16 @@
                 <input type="password" name="password1" placeholder="비밀번호 (문자,숫자로 8~20자)" class = "signup_pass"/> <br>
                 <input type="password" name="password2" placeholder="비밀번호 재확인"  class = "signup_pass" />
                 <div id="signup_alr_pss">
-                    {% if messages %}
-                    {% for message in messages %}
-                    {{ message.tags }}
-                    {{ message.message }}
-                    {% endfor %}
-                    {% endif %}
-                </div>
+                    
             </div>
             <button type="submit" id ="button_next">다음 단계로</button>
         </form>
+        {% if messages %}
+        {% for message in messages %}
+        {{ message.message }}
+        {% endfor %}
+        {% endif %}
+                </div>
         <div class="text-center">
             <a class="small" href="{% url 'login' %}">계정이 있다면? 로그인</a>
         </div>

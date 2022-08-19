@@ -17,11 +17,12 @@
 {% block content %}
 <div id="wrapper">
     <div id="content">
-        <div class="result">
+        <div class="result"> 
+
             {% if flag %}
-            <p class="result_tit">졸업이 <span id="result_point">불가능</span>합니다</p>
+            <p class ="result_tit">졸업 <span id = "result_point">불가능</span>합니다</p>
             {% else %}
-            <p class="result_tit">졸업이 <span id="result_point">가능</span>합니다</p>
+            <p class ="result_tit">졸업 <span id = "result_point">가능</span>합니다</p>
             {% endif %}
         </div>
 
@@ -37,21 +38,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td rowspan="4">교양</td>
+                    <td rowspan="5">교양</td>
                 </tr>
                 {% for key,value in ge_class.items %}
-                <tr>
-                    <td>{{ key }}</td>
-                    <td>{{ value.1 }}</td>
-                    <td>{{ value.0 }}</td>
-                    <td class="remain">{{ value.2 }}</td>
-                </tr>
+                <tr><td>{{ key }}</td>
+                <td>{{ value.1 }}</td>
+                <td>{{ value.0 }}</td>
+                <td class="remain">{{ value.2 }}</td></tr>
                 {% endfor %}
 
 
 
                 <tr>
-                    <td rowspan="3">전공</td>
+                    <td rowspan="4">전공</td>
                 </tr>
                 {% for key,value in major_class.items %}
                 <tr>
@@ -63,7 +62,7 @@
                 {% endfor %}
 
                 <tr>
-                    <td rowspan="2">자선</td>
+                    <td rowspan="3">자선</td>
                 </tr>
                 {% for key,value in free_class.items %}
                 <tr>
@@ -75,11 +74,13 @@
                 {% endfor %}
 
                 <tr>
-                    <td>총 학점</td>
-                    <td></td>
+                    <td rowspan="2">총 학점</td>
+                    </tr>
+                    <tr>
+                    <td>총</td>
                     <td>{{ graduate.sum }}</td>
                     <td>{{ all }}</td>
-                    <td class="remain">47</td>
+                    <td class="remain">{{ remain }}</td>
                 </tr>
 
 
@@ -89,13 +90,13 @@
         <div class="result_text">
             <h2 id="result_tit">상세설명</h2>
             <hr id="result_hr">
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
+            <p>
+            {% if messages %}
+            {% for message in messages %}
+            {{ message.message }} <br>
+            {% endfor %}
+            {% endif %}
+            </p>
         </div>
     </div>
 </div>
