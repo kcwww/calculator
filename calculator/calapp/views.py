@@ -5,6 +5,7 @@ from calapp.models import Graduate
 from django.contrib import messages
 
 
+
 def calculator(request):    
     current_user = request.user
     #user_id = user.id

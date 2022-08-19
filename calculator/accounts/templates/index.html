@@ -9,7 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="{% static 'css/index.css' %}" rel = "stylesheet">
+    
 </head>
+
 
 {% endblock %}
 
@@ -46,7 +48,10 @@
                             <hr id = "put_hr">
                             <p class = "put_plus">-추가버튼을 통해 내용이 입력됩니다</p>
                             <button class="result_button" onclick= "location.href = '{% url 'calculator' %}'">계산하기</button>
-
+                            
+                            
+                            
+                            <input type="text" name="search_word" label="Search Word">
 
                             <!--출력 될 내용 형식 (시작-->
                             {% if user.lesson_set.all %}
