@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+h3 {
+    font-size: 100px;
+}
+
+h3::after {
+    content: '';
+    background-color: #1E51A2;
+    display: block;
+    height: 0.1em;
+    width: 100px;
+    margin: 10px auto;
+    
+}
+
+#content{
+    text-align: center;
+}
+
+
+button{
+    color: white;
+    background-color: #1E51A2;
+    border: none;
+    height: 25px;
+    width: 100px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+input{
+    width: 230px;
+    height: 20px;
+    font-size: 15px;
+    margin: 5px;
+}
+
+.id{
+    width: 154px;
+}
+
+.check{
+    width: 70px;
+    margin-bottom: 0px;
+}
+
+.info {
+    font-size: 13px;
+}
+
+.small_info{
+    font-size: 10px;
+
+}
+
+
+.result{
+    border: #a8aabc solid ;
+    margin: 5px;
+}
+
+.detail{
+    border: #a8aabc solid;
+}
