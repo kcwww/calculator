@@ -1,27 +1,59 @@
-{% extends 'base.html' %}
 {% load static %}
 
 <!--header랑 겹치는 코드 또 있음 수정해야함-->
-{% block headcontent %}
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <title>결과</title>
-    <link rel="stylesheet" href="{% static 'css/result.css' %}" type="text/css">
+    
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
+    <link rel="stylesheet" href="{% static 'css/header.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/result.css' %}" type="text/css">
 </head>
-{% endblock %}
 
-{% block content %}
+
+<body>
+
+<!-- header -->
+<header class="header">
+    <div class="header_wrapper">
+        <div class="header_logo">
+            <a href="{% url 'home' %}">
+                <!--로고 누르면 어디로 가?-->
+                <img src="{% static 'img/cal.png'%}" id="headr_img" />
+                <h1 class="header_title">학점계산기</h1>
+            </a>
+        </div>
+        <div class="header_inform">
+            {% for pro in user.profile_set.all %}
+            <label>{{ pro.name }} | </label>
+            <label>{{ pro.major }} | </label>
+            <label>{{ pro.ad_year }} </label>
+            {% endfor %}
+        </div>
+        <!--여기 어떻게 할지 생각하기-->
+        <nav class="header_fix">
+            <ul>
+                <li><a href="{% url 'logout' %}">로그아웃</a></li>
+                <li style="color : #a8aabc">|</li>
+                <li><a href="{% url 'modify' %}">정보수정</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
 <div id="wrapper">
     <div id="content">
-        <div class="result">
+        <div class="result" style="margin-top: 5em;">
             {% if flag %}
             <p class="result_tit">졸업이 <span id="result_point">불가능</span>합니다</p>
             {% else %}
-            <p class="result_tit">졸업이 <span id="result_point">가능</span>합니다</p>
+            <p class="result_tit">졸업이 <span id="result_point2">가능</span>합니다</p>
             {% endif %}
         </div>
 
@@ -37,7 +69,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td rowspan="4">교양</td>
+                    <td rowspan="5">교양</td>
                 </tr>
                 {% for key,value in ge_class.items %}
                 <tr>
@@ -51,7 +83,7 @@
 
 
                 <tr>
-                    <td rowspan="3">전공</td>
+                    <td rowspan="4">전공</td>
                 </tr>
                 {% for key,value in major_class.items %}
                 <tr>
@@ -63,7 +95,7 @@
                 {% endfor %}
 
                 <tr>
-                    <td rowspan="2">자선</td>
+                    <td rowspan="3">자선</td>
                 </tr>
                 {% for key,value in free_class.items %}
                 <tr>
@@ -79,7 +111,7 @@
                     <td></td>
                     <td>{{ graduate.sum }}</td>
                     <td>{{ all }}</td>
-                    <td class="remain">47</td>
+                    <td class="remain">{{ remain }}</td>
                 </tr>
 
 
@@ -89,28 +121,39 @@
         <div class="result_text">
             <h2 id="result_tit">상세설명</h2>
             <hr id="result_hr">
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
-            <p>설명 블라블라 뭐 어떻게 디자인 할지 아직 미정</p>
+            <p>
+            {% if messages %}
+            {% for message in messages %}
+            {{ message.message }} <br>
+            {% endfor %}
+            {% endif %}
+            </p>
         </div>
     </div>
 </div>
+</body>
 
-<footer class="footer">
-    <hr id="footer_hr">
-    <div class="footer_text">
+<footer class ="footer">
+    <hr id = "footer_hr">
+    <div class = "footer_text">
         <ul class="footer_list">
-            <li><a href="#">문의</a></li>
+            <li ><a href="javascript:popout()">이용 방법</a></li>
             <li>|</li>
-            <li><a href="#">사이트 도움말</a></li>
-            <li>|</li>
-            <li><a href="#">건의</a></li>
+            <li><a href = "javascript:click()">문의 및 건의</li>
         </ul>
-        <p class="copy">© 2022 멋사강원대</p>
+        <p class = "copy">© 2022 멋사강원대</p>
     </div>
 </footer>
-{% endblock %}
+
+<script>
+    
+    function click(){ alert('문의 및 건의는 calculator1234@gmail.com으로 연락주세요');}
+
+    function popout() {
+        var url = "{% url 'method' %}";
+        var name = "method"
+        var css = "width = 500, height = 600, top = 10, left = 10"
+        window.open(url,name,css )
+    }
+</script>
+</html>

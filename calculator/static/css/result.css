@@ -6,7 +6,7 @@
     font-family: 'GmarketSansMedium';
     text-align: center;
     width: 50%;
-    margin: 7em auto;
+    margin: 3em auto;
 }
 
 
@@ -38,17 +38,24 @@
     margin-right: auto;
 }
 
-th, td {
+th{
     border: 0.1em solid #A8AABc;
     height: 40px;
     padding-top: 13px;
 }
 
-tr:first-child td {
-    font-weight: bold;
+td{
+    border: 0.1em solid #A8AABc;
+    height: 40px;
+    padding-top: 13px; 
 }
 
 
+#result_point2{
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1E51A2;
+}
 
 .remain{
     color: #1E51A2;
@@ -88,3 +95,5 @@ tr:first-child td {
         width: 85%;
     }
 }
+
+

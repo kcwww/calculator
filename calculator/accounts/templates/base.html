@@ -8,39 +8,6 @@
 {% endblock %}
 
 <body>
-    <style type="text/css">
-        @import url("{% static 'css/header.css' %}");
-    </style>
-
-    <!-- header -->
-    <header class="header">
-        <div class="header_wrapper">
-            <div class="header_logo">
-                <a href="{% url 'home' %}">
-                    <!--로고 누르면 어디로 가?-->
-                    <img src="{% static 'img/cal.png'%}" id="headr_img" />
-                    <h1 class="header_title">학점계산기</h1>
-                </a>
-            </div>
-            <div class="header_inform">
-                {% for pro in user.profile_set.all %}
-                <label>{{ pro.name }}| </label>
-                <label>{{ pro.major }}| </label>
-                <label>{{ pro.ad_year }} </label>
-                {% endfor %}
-            </div>
-            <!--여기 어떻게 할지 생각하기-->
-            <nav class="header_fix">
-                <ul>
-                    <li><a href="{% url 'logout' %}">로그아웃</a></li>
-                    <li style="color : #a8aabc">|</li>
-                    <li><a href="{% url 'modify' %}">정보수정</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-
     <!-- 중간에 들어갈 내용 -->
     {% block content %}
     {% endblock %}

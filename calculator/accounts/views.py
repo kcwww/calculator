@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from accounts.models import Lesson, Profile, Guest
+from accounts.models import Lesson, Profile
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
-from .forms import LessonForm, ProfileForm
+
 from django.contrib.auth.hashers import check_password
 from calapp.models import Graduate
 from calapp.views import add_credit
 
 
 def signup(request):
-    if request.method == "POST":  
+    if request.method == "POST":
+        if request.POST["password1"] == "" or request.POST["password2"] == "" or request.POST["username"] == "":
+            messages.info(request, "빈칸 없이 모두 입력해주시길 바랍니다.")
+            return redirect('signup')  
         if User.objects.filter(username=request.POST['username']).exists():
             messages.info(request, "이미 존재하는 아이디 입니다.")
             return render(request, 'register.html')   
@@ -26,16 +29,20 @@ def signup(request):
         return render(request, 'register.html')
 
 def signup_detail(request): #회원정보 기입
+    Graduate_object = Graduate.objects.all()
+
     if request.method == "POST":
+        if request.POST["name"] == "" or request.POST["classkind"] == "" or request.POST["ad_year"] == "":
+            messages.info(request, "빈칸 없이 모두 입력해주시길 바랍니다.")
+            return redirect('signup_detail')
         new_user = Profile()
         new_user.name = request.POST["name"]
-        new_user.major = request.POST["major"]
+        new_user.major = request.POST["classkind"]
         new_user.ad_year = request.POST["ad_year"]
         new_user.user = request.user
         new_user.save()
         return redirect('home')
-    form = ProfileForm()
-    return render(request, 'register_detail.html',{'form':form})
+    return render(request, 'register_detail.html', {'Graduate_object': Graduate_object})
 
 def login(request):
     # request == POST 라면 로그인 GET 이라면 login html 띄우기
@@ -62,9 +69,6 @@ def logout(request):
     return redirect('login')
 
 def home(request): #메인 화면
-    #student = request.user
-    #current_user = Profile.objects.get(user = student)
-    #current_user =  get_object_or_404(Profile, user=request.user)
     current_user = request.user
     user_profile = Profile.objects.get(user = current_user)
     gradu_major = user_profile.major
@@ -78,28 +82,37 @@ def home(request): #메인 화면
     balance     = Lesson.objects.filter(link = current_user, classkind='균형교양')
     basic       = Lesson.objects.filter(link = current_user, classkind='기초교양')
     free        = Lesson.objects.filter(link = current_user, classkind='자유선택')
-    
+    teaching    = Lesson.objects.filter(link = current_user, classkind='교직이수')
 
+    deepmajor = 0
     choicemajor = add_credit(choicemajor)
     needmajor = add_credit(needmajor)
+    if(choicemajor >= gradu.choicemajor):
+        deepmajor = choicemajor - gradu.choicemajor
+        choicemajor = gradu.choicemajor
     special = add_credit(special)
     college = add_credit(college)
     balance = add_credit(balance)
     basic = add_credit(basic)
     free = add_credit(free)
+    teaching = add_credit(teaching)
 
     now_credits = {
         '전공선택':[choicemajor,gradu.choicemajor],
         '전공필수':[needmajor,gradu.needmajor],
+        '심화전공':[deepmajor,gradu.deepmajor],
         '특화교양':[special,gradu.special],
         '대학별교양':[college,gradu.college],
         '균형교양':[balance,gradu.balance],
         '기초교양':[basic,gradu.basic],
-        '자유선택':[free,gradu.free]
+        '자유선택':[free,gradu.free],
+        '교직이수':[teaching,gradu.teaching],
         }
 
 
     if (request.method == "POST"):
+        if(request.POST.get("classkind") == None or request.POST.get("classname") == '' or request.POST.get("classcredits") == ''):
+            return redirect('home')
         new_class = Lesson()
         new_class.classname = request.POST["classname"]
         new_class.classkind = request.POST["classkind"]
@@ -110,6 +123,7 @@ def home(request): #메인 화면
     return render(request,'index.html',{'user':current_user,'credits':now_credits})
 
 def delete(request, class_id):
+    print("delete")
     delete_lesson = get_object_or_404(Lesson, pk=class_id) #수강한 과목 지우기
     print(delete_lesson)
     delete_lesson.delete()
@@ -120,28 +134,10 @@ def delete_all(request):
     delete_all_lesson.delete()
     return redirect('home')
 
-# def class_modify(request, class_id):
-#     print(class_id)
-#     #modify_lesson = get_object_or_404(Lesson, pk=class_id)
-#     modify_lesson = Lesson.objects.get(pk=class_id)
-#     print(modify_lesson.classname)
-#     if request.method == "POST":
-#         if(request.POST['classname'] != ''):
-#             modify_lesson.classname = request.POST['classname']
-#         if(request.POST['classkind'] != ''):
-#             modify_lesson.classkind = request.POST['classkind']
-#         if(request.POST['classcredits'] != ''):
-#             modify_lesson.classcredits = request.POST['classcredits']
-#         modify_lesson.save()
-#         return redirect('home')
-#     return redirect('home')
 
-    
-
-################################################
-#회원정보/비밀번호 수정 html
 def modify(request):
-    return render(request, 'modify.html')
+    Graduate_object = Graduate.objects.all()
+    return render(request, 'modify.html', {'Graduate_object': Graduate_object})
 
 #비밀번호 수정
 def modify_password(request):
@@ -174,8 +170,8 @@ def modify_userinfo(request):
     if request.method == "POST":
         if(request.POST['name'] != ''):
             Sprofile.name = request.POST['name']
-        if(request.POST['major'] != ''):
-            Sprofile.major = request.POST['major']
+        if(request.POST['classkind'] != ''):
+            Sprofile.major = request.POST['classkind']
         if(request.POST['admisson_year'] != ''):
             Sprofile.ad_year = request.POST['admisson_year']
         Sprofile.save()
@@ -183,33 +179,6 @@ def modify_userinfo(request):
     return render(request, 'modify.html') #수정화면
 
 
-################################################################
-#
-#
-###비회원 로그인
-#def guest_login(request):
-#    if request.method == "POST":
-#        guest = Guest()
-#        guest.major = request.POST['major']
-#        guest.ad_year = request.POST['ad_year']
-#        guest.save()
-#        form = LessonForm()
-#        return render(request,'guest_index.html',{'guest':guest,'form':form})
-#
-#    return render(request, 'guest_login.html')
-#
-#def guest_home(request,guest_id):
-#    if (request.method == "POST"):
-#        guest = get_object_or_404(Guest,pk=guest_id)
-#        form = LessonForm()   
-#        filled_form = LessonForm(request.POST)
-#        if (filled_form.is_valid()):
-#            finished_form = filled_form.save(commit=False)
-#            finished_form.guest_link = get_object_or_404(Guest,pk=guest_id)
-#            finished_form.save()
-#            return render(request,'guest_index.html',{'guest':guest,'form':form})
-#
-#def guest_delete(request,class_id):
-#    delete_post = get_object_or_404(Lesson, pk=class_id) #수강한 과목 지우기
-#    delete_post.delete()
-#    return redirect('geust_home',)
+def method(request):
+    return render(request, 'method.html')
+

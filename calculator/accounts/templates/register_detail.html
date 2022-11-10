@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div id="wrapper">
     <div id="content">
         <div class="inform_size">
@@ -25,25 +26,54 @@
             <div class="inform_puts">
                 {% csrf_token %}
                 <input type="text" name="name" placeholder="이름" class="inform_put" /><br>
-                <input type="text" name="major" placeholder="학과" class="inform_put" /><br>
+                <select name="classkind" class="selector">
+                    <option disabled selected>학과</option>
+                    {% for Graduate in Graduate_object %}
+                    <option value="{{Graduate.major}}">{{Graduate.major}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <!-- <input type="text" name="major" placeholder="학과" class="inform_put" /><br> -->
                 <input type="number" name="ad_year" placeholder="입학년도" class="inform_put" />
-            </div>
+            <p id="message" style="    display: inline-block;
+                padding: 0.7em 0.2em 0 0.1em;
+                white-space: nowrap;
+                font-size: 0.9rem;
+                color : red;
+                font-family: 'GmarketSansMedium';
+            ">
+                    {% if messages %}
+                    {% for message in messages %}
+                    {{ message.message }}
+                    {% endfor %}
+                    {% endif %}
+                </p><br>
             <button type="submit" id="button_final">가입하기</button>
         </form>
     </div>
 </div>
 
-<footer class="footer">
-    <hr id="footer_hr">
-    <div class="footer_text">
+<footer class ="footer">
+    <hr id = "footer_hr">
+    <div class = "footer_text">
         <ul class="footer_list">
-            <li><a href="#">문의</a></li>
+            <li ><a href="javascript:popout()">이용 방법</a></li>
             <li>|</li>
-            <li><a href="#">사이트 도움말</a></li>
-            <li>|</li>
-            <li><a href="#">건의</a></li>
+            <li><a href = "javascript:click()">문의 및 건의</li>
         </ul>
-        <p class="copy">© 2022 멋사강원대</p>
+        <p class = "copy">© 2022 멋사강원대</p>
     </div>
 </footer>
+
+<script>
+    
+    function click(){ alert('문의 및 건의는 calculator1234@gmail.com으로 연락주세요');}
+
+    function popout() {
+        var url = "{% url 'method' %}";
+        var name = "method"
+        var css = "width = 500, height = 600, top = 10, left = 10"
+        window.open(url,name,css )
+    }
+</script>
 {% endblock %}

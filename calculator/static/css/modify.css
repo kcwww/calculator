@@ -31,7 +31,22 @@
     margin-top : 3em;
 }
 
+.selector{
+    font-family: 'GmarketSansMedium';
+   border-radius : 1em;
+   border: 0.1rem solid #A8AABc;
+   width: 100%;
+   max-width: 17em;
+   height: 3.5em;
+   margin-top: 0.8em;
+   margin-bottom: 0.8em;
+   padding: 1em;
+   color : #757575;
+}
 
+.selector ::-ms-expand {
+   display: none;
+}
 
 ::placeholder {
     font-family: 'GmarketSansMedium';

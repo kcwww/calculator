@@ -1,8 +1,9 @@
-#from platform import freedesktop_os_release
+
 from django.shortcuts import render,redirect,get_object_or_404
 from accounts.models import Profile,Lesson
 from calapp.models import Graduate
 from django.contrib import messages
+
 
 
 def calculator(request):    
@@ -17,20 +18,23 @@ def calculator(request):
 
     choicemajor = Lesson.objects.filter(link = current_user, classkind='전공선택')
     needmajor   = Lesson.objects.filter(link = current_user, classkind='전공필수')
+    
     special     = Lesson.objects.filter(link = current_user, classkind='특화교양')
     college     = Lesson.objects.filter(link = current_user, classkind='대학별교양')
     balance     = Lesson.objects.filter(link = current_user, classkind='균형교양')
     basic       = Lesson.objects.filter(link = current_user, classkind='기초교양')
     free        = Lesson.objects.filter(link = current_user, classkind='자유선택')
-    
+    teaching    = Lesson.objects.filter(link = current_user, classkind='교직이수')
 
     choicemajor = add_credit(choicemajor)
+    deepmajor = 0
     needmajor = add_credit(needmajor)
     special = add_credit(special)
     college = add_credit(college)
     balance = add_credit(balance)
     basic = add_credit(basic)
     free = add_credit(free)
+    teaching = add_credit(teaching)
 
     
     error_sum = 0
@@ -48,10 +52,16 @@ def calculator(request):
     if(choicemajor < gradu.choicemajor):
         flag = 1
         messages.info(request,"전공 학점이 부족합니다.")
-    elif(choicemajor > gradu.choicemajor):
-        free = free + (choicemajor - gradu.choicemajor)
+    else:
+        deepmajor = choicemajor - gradu.choicemajor
         choicemajor = gradu.choicemajor
-        messages.info(request,"전공 학점이 초과되어 자유선택 학점에 추가되었습니다.")
+        if(deepmajor < gradu.deepmajor):
+            flag = 1
+            messages.info(request,"심화 전공 학점이 부족합니다.")
+        elif(deepmajor > gradu.deepmajor):
+            free = free + (deepmajor - gradu.deepmajor)
+            deepmajor = gradu.deepmajor
+            messages.info(request,"전공 학점이 초과되어 자유선택 학점에 추가되었습니다.")
 
     if(college < gradu.college):
         flag = 1
@@ -133,17 +143,20 @@ def calculator(request):
 
 
     free_Lessons = {
-        '자유선택' : [free,gradu.free,gradu.free-free]
+        '자유선택' : [free,gradu.free,gradu.free-free],
+        '교직이수' : [teaching,gradu.teaching,gradu.teaching-teaching],
         }
 
 
     major_Lessons = {
         '전공선택' : [choicemajor,gradu.choicemajor,gradu.choicemajor-choicemajor],
+        '심화전공' : [deepmajor,gradu.deepmajor,gradu.deepmajor-deepmajor],
         '전공필수' : [needmajor,gradu.needmajor,gradu.needmajor-needmajor],
         }
     
     Lessons = [
     choicemajor,
+    deepmajor,
     needmajor,
     special,
     college,
@@ -156,6 +169,7 @@ def calculator(request):
     for credit in Lessons:
         all_credits += credit
         
+    remain = gradu.sum - all_credits
 
     if(flag):
         messages.info(request,"졸업이 불가능 합니다. 학점이 부족합니다.")
@@ -168,6 +182,8 @@ def calculator(request):
         'ge_class':ge_Lessons,
         'major_class':major_Lessons,
         'free_class':free_Lessons,
+        'remain':remain,
+        'flag':flag
         })
 
 

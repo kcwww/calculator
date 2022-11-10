@@ -29,4 +29,6 @@ urlpatterns = [
     
     path('calculator',cal_views.calculator, name='calculator'),
     #path('class_delete<int:class_id>',cal_views.class_delete,name='class_delete'),
+
+    path('method', views.method, name='method'),
 ]
