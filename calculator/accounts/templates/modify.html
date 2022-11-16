@@ -60,8 +60,9 @@
             {% for pro in user.profile_set.all %}
             <div class="modify_input">
                 <input type="text" name="name" placeholder="{{ pro.name }}" class="modify_in" /><br>
+
                 <select name="classkind" class="selector">
-                    <option disabled selected>{{ pro.major }}</option>
+                    <option value="{{ pro.major }}">{{ pro.major }}</option>
                     {% for Graduate in Graduate_object %}
                     <option value="{{Graduate.major}}">{{Graduate.major}}</option>
                     {% endfor %}
@@ -118,7 +119,7 @@
 
 <script>
 
-    function click() { alert('문의 및 건의는 calculator1234@gmail.com으로 연락주세요'); }
+    function click() { alert('문의 및 건의는 knucal1234@gmail.com으로 연락주세요'); }
 
     function popout() {
         var url = "{% url 'method' %}";
